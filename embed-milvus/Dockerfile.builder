@@ -1,5 +1,5 @@
 
-FROM soulteary/milvus-openblas:0.3.20-intel-x86-ubuntu-22.04 AS OpenBLAS
+FROM soulteary/milvus-openblas:0.3.21-amd-zen-ubuntu-22.04 AS OpenBLAS
 
 FROM ubuntu:22.04 AS Base
 LABEL maintainer=soulteary@gmail.com
@@ -12,8 +12,8 @@ RUN apt-get update && apt-get install -y \
     g++ gcc make lcov libtool m4 autoconf automake ccache libssl-dev zlib1g-dev libboost-regex-dev libboost-program-options-dev libboost-system-dev libboost-filesystem-dev libboost-serialization-dev python3-dev libboost-python-dev libcurl4-openssl-dev gfortran libtbb-dev pkg-config && \
     apt-get remove --purge -y
 # https://soulteary.com/2022/07/31/into-vector-computing-making-openblas-docker-prebuilt-product-images.html
-COPY --from=OpenBLAS /usr/lib/libopenblas-r0.3.20.so /usr/lib/
-RUN ln -s /usr/lib/libopenblas-r0.3.20.so /usr/lib/libopenblas.so.0 && \
+COPY --from=OpenBLAS /usr/lib/libopenblas-r0.3.21.so /usr/lib/
+RUN ln -s /usr/lib/libopenblas-r0.3.21.so /usr/lib/libopenblas.so.0 && \
     ln -s /usr/lib/libopenblas.so.0 /usr/lib/libopenblas.so
 # https://soulteary.com/2022/07/04/build-a-maintainable-golang-development-environment.html
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
