@@ -1,5 +1,11 @@
 # Embed Milvus
 
+Small and easy-to-use vector database experiment environment.
+
+![](./docker.png)
+
+---
+
 Use this method if you want to get a quick Milvus learning environment, or learn how to use a vector database.
 
 Start an All in One Milvus instance with a simple command:
