@@ -1,0 +1,14 @@
+FROM soulteary/milvus:embed-2.1.0
+RUN apt-get update && \
+    apt-get install -y ffmpeg libsm6 libxext6 && \
+    apt-get remove --purge -y && rm -rf /var/lib/apt/lists/*
+
+RUN pip install https://download.pytorch.org/whl/cpu/torch-1.12.1%2Bcpu-cp39-cp39-linux_x86_64.whl && \
+    pip install https://download.pytorch.org/whl/cpu/torchvision-0.13.1%2Bcpu-cp39-cp39-linux_x86_64.whl && \
+    pip install diskcache==5.2.1 fastapi==0.65.2 towhee==0.8.0 uvicorn==0.13.4 opencv-python==4.6.0.66 torch==1.12.1 torchvision==0.13.1 Pillow==9.2.0 timm==0.6.7 && \
+    pip cache purge
+
+WORKDIR /app/server/
+COPY /server/src/* ./
+
+RUN python encode.py
