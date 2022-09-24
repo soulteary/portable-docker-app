@@ -18,4 +18,4 @@ class ResNet50:
 
 
 if __name__ == "__main__":
-    ResNet50().resnet50_extract_feat('https://github.com/towhee-io/towhee/raw/main/towhee_logo.png')
+    ResNet50().resnet50_extract_feat('https://i1.sinaimg.cn/dy/deco/2013/0329/logo/LOGO_1x.png')
