@@ -1,0 +1,18 @@
+FROM soulteary/image-search-app:assets-2.1.0 as Assets
+
+FROM golang:1.19.0-buster AS GoBuilder
+RUN sed -i -E "s/\w+.debian.org/mirrors.tuna.tsinghua.edu.cn/g" /etc/apt/sources.list
+RUN apt-get update && apt-get install -y upx
+
+ENV GO111MODULE=on
+ENV CGO_ENABLED=0
+ENV GOPROXY=https://goproxy.cn
+
+WORKDIR /app
+COPY --from=Assets /app/assets /app/internal/web/assets
+COPY gateway/  ./
+RUN go build -ldflags "-w -s" -o gateway main.go && \
+    upx -9 -o gateway.minify gateway
+
+FROM scratch
+COPY --from=GoBuilder /app/gateway.minify /gateway
