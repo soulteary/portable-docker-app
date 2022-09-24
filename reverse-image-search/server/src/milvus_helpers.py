@@ -6,16 +6,19 @@ from logs import LOGGER
 
 class MilvusHelper:
     """
-    Say something about the ExampleCalass...
+    MilvusHelper class to manager the Milvus Collection.
 
     Args:
-        args_0 (`type`):
+        host (`str`):
+            Milvus server Host.
+        port (`str|int`):
+            Milvus server port.
         ...
     """
-    def __init__(self):
+    def __init__(self, host=MILVUS_HOST, port=MILVUS_PORT):
         try:
             self.collection = None
-            connections.connect(host=MILVUS_HOST, port=MILVUS_PORT)
+            connections.connect(host=host, port=port)
             LOGGER.debug(f"Successfully connect to Milvus with IP:{MILVUS_HOST} and PORT:{MILVUS_PORT}")
         except Exception as e:
             LOGGER.error(f"Failed to connect Milvus: {e}")
@@ -23,10 +26,7 @@ class MilvusHelper:
 
     def set_collection(self, collection_name):
         try:
-            if self.has_collection(collection_name):
-                self.collection = Collection(name=collection_name)
-            else:
-                raise Exception(f"There is no collection named:{collection_name}")
+            self.collection = Collection(name=collection_name)
         except Exception as e:
             LOGGER.error(f"Failed to load data to Milvus: {e}")
             sys.exit(1)
@@ -43,11 +43,13 @@ class MilvusHelper:
         # Create milvus collection if not exists
         try:
             if not self.has_collection(collection_name):
-                field1 = FieldSchema(name="id", dtype=DataType.INT64, descrition="int64", is_primary=True, auto_id=True)
-                field2 = FieldSchema(name="embedding", dtype=DataType.FLOAT_VECTOR, descrition="float vector",
+                field1 = FieldSchema(name='path', dtype=DataType.VARCHAR, descrition='path to image', max_length=500,
+                                     is_primary=True, auto_id=False)
+                field2 = FieldSchema(name="embedding", dtype=DataType.FLOAT_VECTOR, descrition="image embedding vectors",
                                      dim=VECTOR_DIMENSION, is_primary=False)
                 schema = CollectionSchema(fields=[field1, field2], description="collection description")
                 self.collection = Collection(name=collection_name, schema=schema)
+                self.create_index(collection_name)
                 LOGGER.debug(f"Create Milvus collection: {collection_name}")
             else:
                 self.set_collection(collection_name)
@@ -56,11 +58,10 @@ class MilvusHelper:
             LOGGER.error(f"Failed to load data to Milvus: {e}")
             sys.exit(1)
 
-    def insert(self, collection_name, vectors):
+    def insert(self, collection_name, path, vectors):
         # Batch insert vectors to milvus collection
         try:
-            self.create_collection(collection_name)
-            data = [vectors]
+            data = [path, vectors]
             self.set_collection(collection_name)
             mr = self.collection.insert(data)
             ids = mr.primary_keys
@@ -104,9 +105,7 @@ class MilvusHelper:
         try:
             self.set_collection(collection_name)
             search_params = {"metric_type": METRIC_TYPE, "params": {"nprobe": 16}}
-            # data = [vectors]
             res = self.collection.search(vectors, anns_field="embedding", param=search_params, limit=top_k)
-            print(res[0])
             LOGGER.debug(f"Successfully search in collection: {res}")
             return res
         except Exception as e:
