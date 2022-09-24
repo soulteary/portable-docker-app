@@ -1,0 +1,12 @@
+FROM tsl0922/ttyd:latest AS Console
+
+FROM soulteary/milvus:embed-2.1.0 As Builder
+RUN apt-get update && \
+    apt-get install -y upx && \
+    apt-get remove --purge -y && rm -rf /var/lib/apt/lists/*
+WORKDIR /app/console/
+COPY --from=Console /usr/bin/ttyd  ./
+RUN upx -9 -o ttyd.minify ttyd
+
+FROM scratch
+COPY --from=Builder /app/console/ttyd.minify /ttyd
