@@ -232,13 +232,21 @@ const Setting = (props: any) => {
     });
   };
   const uploadImgPath = () => {
-    train({ File: inputs }).then((res: any) => {
+    setLoading(true);
+
+    if (inputs.trim() === '') {
+      setInputs("/images");
+    }
+
+    train({ File: (inputs || "/images") }).then((res: any) => {
       if (res.status === 200) {
-        setLoading(true);
         setTimeout(() => {
           setInputs("");
           _keepProcess();
-        }, 1000);
+        }, 500);
+      } else {
+        setLoading(false);
+        _keepProcess();
       }
     });
   };
@@ -268,7 +276,7 @@ const Setting = (props: any) => {
     <div className={classes.setting}>
       <div className={classes.header}>
         <img src={Logo} width="150px" alt="logo" />
-        <p>Image Search Demo</p>
+        <p>Image Search Demo [<a href="/console" style={{ color: "gold" }} target="_blank">console</a>]</p>
       </div>
       <div className={classes.configHead}>
         <h4 className={classes.config}>Config</h4>
@@ -307,7 +315,7 @@ const Setting = (props: any) => {
                 notchedOutline: classes.notchedOutline,
                 root: classes.formLabel,
               },
-              placeholder: "path/to/your/images",
+              placeholder: "/images",
             }}
           />
           <Fab
