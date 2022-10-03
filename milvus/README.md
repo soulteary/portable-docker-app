@@ -1,5 +1,7 @@
 # Embed Milvus
 
+[中文教程](https://soulteary.com/2022/09/17/the-docker-tool-image-of-the-entry-vector-database-milvus.html)
+
 Small and easy-to-use vector database experiment environment.
 
 ![](./docker.png)
