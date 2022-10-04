@@ -4,7 +4,9 @@
 
 ## APP List
 
-- Docker Embed Milvus [How To Use](./milvus)
+- Mini Image Search Engine [How to Use](./reverse-image-search/)
+    - `docker pull soulteary/image-search-app:2.1.0`
+- Docker Embed Milvus [How To Use](./milvus/)
     - `docker pull soulteary/milvus:embed-2.1.0`
 
 ## Related Projects
