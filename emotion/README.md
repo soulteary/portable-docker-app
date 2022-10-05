@@ -10,9 +10,6 @@ Of course, because the model I chose is a pre-trained model, and considering the
 
 If you have higher requirements, you can refer to this article for model replacement, :D
 
-
-如果你着急想试玩这个应用，可以通过下面的 Docker 命令，快速启动它：
-
 If you're in a hurry to try out the app, you can quickly start it with the following Docker command:
 
 ```bash
