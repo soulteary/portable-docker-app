@@ -7,6 +7,7 @@
 ### 2024
 
 - [How to Use](./weaviate) / [中文教程](#) **Out-of-the-box vector database, ML/AI first**
+    - `docker pull soulteary/t2v-transformers:2024.05.29`
 
 ### 2022
 
