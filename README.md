@@ -6,7 +6,7 @@
 
 ### 2024
 
-- [How to Use](#) / [中文教程](#)
+- [How to Use](./weaviate) / [中文教程](#) **Out-of-the-box vector database, ML/AI first**
 
 ### 2022
 
