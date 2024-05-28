@@ -4,6 +4,11 @@
 
 ## APP List
 
+### 2024
+
+- [How to Use](#) / [中文教程](#)
+
+### 2022
 
 - [How to Use](https://github.com/soulteary/docker-emotion) / [中文教程](https://soulteary.com/2022/09/30/nlp-text-sentiment-analysis-application-using-docker-and-huggingface.html) **Text Emotion / Sentiment Analysis Tools**
     - `docker pull soulteary/emotion:2022.09.30`

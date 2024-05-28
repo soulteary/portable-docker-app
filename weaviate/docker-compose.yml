@@ -1,0 +1,40 @@
+version: "3.4"
+services:
+  weaviate:
+    command:
+      - --host
+      - 0.0.0.0
+      - --port
+      - "8080"
+      - --scheme
+      - http
+    image: semitechnologies/weaviate:1.25.1
+    ports:
+      - 8086:8080
+      - 50051:50051
+    volumes:
+      - ./weaviate_data:/var/lib/weaviate
+    restart: on-failure:0
+    environment:
+      QUERY_DEFAULTS_LIMIT: 25
+      # https://weaviate.io/developers/weaviate/configuration/authentication
+      AUTHENTICATION_APIKEY_ENABLED: "true"
+      AUTHENTICATION_APIKEY_ALLOWED_KEYS: "soulteary,password"
+      AUTHENTICATION_APIKEY_USERS: "soulteary,user@lab.io"
+      AUTHORIZATION_ADMINLIST_ENABLED: "true"
+      AUTHORIZATION_ADMINLIST_USERS: "soulteary,user@lab.io"
+      PERSISTENCE_DATA_PATH: "/var/lib/weaviate"
+      CLUSTER_HOSTNAME: "node1"
+      ENABLE_MODULES: "text2vec-transformers"
+      # Support enabled modules, ENABLE_MODULES: "text2vec-cohere,text2vec-huggingface,text2vec-palm,text2vec-openai,generative-openai,generative-cohere,generative-palm,ref2vec-centroid,reranker-cohere,qna-openai"
+      # Only store vectors, DEFAULT_VECTORIZER_MODULE: "none"
+      DEFAULT_VECTORIZER_MODULE: "text2vec-transformers"
+      TRANSFORMERS_INFERENCE_API: "http://t2v-transformers:8080"
+
+  t2v-transformers:
+    image: soulteary/t2v-transformers:2024.05.29
+    environment:
+      # set to 1 to enable
+      ENABLE_CUDA: 0
+    ports:
+      - 9090:8080
